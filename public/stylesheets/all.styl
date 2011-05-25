@@ -1,0 +1,76 @@
+body
+  font 18px "Lucida Grande", Helvetica, Arial, sans-serif
+
+a, a:visited
+  color #00B7FF
+
+border-radius()
+ -webkit-border-radius arguments
+ -moz-border-radius arguments
+ border-radius arguments
+
+rounded-top()
+ -webkit-border-top-left-radius arguments
+ -webkit-border-top-right-radius arguments
+ -moz-border-radius-topleft arguments
+ -moz-border-radius-topright arguments
+ border-top-left-radius arguments
+ border-top-right-radius arguments
+
+#top_banner
+  z-index: -1000
+  position absolute
+  top 0
+  left 0
+  width 100%
+
+$banner-height = 60px
+#top_banner, header
+  height $banner-height
+  background-color #FF0000
+
+header
+  position relative
+  h1
+    line-height $banner-height
+    font-size $banner-height - 20px
+  nav
+    display inline-block
+    position absolute
+    top 0
+    right 0
+    a, a:visited
+      color #000000
+      text-decoration none
+      padding 5px 20px
+      line-height $banner-height
+      border-radius 5px
+    a:hover
+      color #888888
+      background-color #FFFFFF
+
+#main
+  width 710px
+  margin 0 auto
+  border-left 1px solid #000
+  border-right 1px solid #000
+  padding 0 5px
+
+.center
+  text-align center
+
+a.large-button
+  border-radius 10px
+  color #FFFFFF
+  background-color #0ADB0D
+  text-decoration none
+  padding 15px 30px
+  font-size 40px
+  font-weight bold
+  display inline-block
+  text-align center
+  margin 20px 0
+
+#content
+  padding 20px
+
