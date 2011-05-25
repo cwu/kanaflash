@@ -1,0 +1,7 @@
+*~
+*.swp
+node_modules
+pids
+*.log
+.monitor
+public/stylesheets/*.css
