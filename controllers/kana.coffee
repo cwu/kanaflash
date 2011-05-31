@@ -19,7 +19,7 @@ module.exports = (kanaflash) ->
 
   kanaflash.app.get '/:kanaSet/random', (req, res) ->
     client.srandmember "charset:#{ req.params.kanaSet }", (err, kana) ->
-      client.get "charset:#{ req.params.kanaSet }:#{ kana }:romanji", (err, romanji) ->
+      client.smembers "charset:#{ req.params.kanaSet }:#{ kana }:romanji", (err, romanji) ->
         res.send {
           kana    : kana
           romanji : romanji

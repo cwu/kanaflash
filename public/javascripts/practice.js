@@ -2,7 +2,7 @@
   var practice;
   practice = {
     kana: '',
-    romanji: '',
+    romanji: [],
     guess: '',
     random: function() {
       var self;
@@ -19,14 +19,27 @@
       });
     }
   };
+  $('#practice input[type=text]').live('keyup', function() {
+    if (_.contains(practice.romanji, $(this).val())) {
+      practice.random();
+      $(this).val('');
+      return $('#practice').addClass('correct');
+    }
+  });
+  $('#practice input[type=text]').live('focus', function() {
+    if ($(this).hasClass('prompt')) {
+      $(this).removeClass('prompt');
+      return $(this).val('');
+    }
+  });
+  $('#practice input[type=text]').live('blur', function() {
+    if ($.trim($(this).val()) === '') {
+      $(this).addClass('prompt');
+      return $(this).val('Enter Romanji...');
+    }
+  });
   $(document).ready(function() {
-    $('#practice input[type=text]').keyup(function(e) {
-      if (practice.romanji === $(this).val()) {
-        practice.random();
-        $(this).val('');
-        return $('#practice').addClass('correct');
-      }
-    });
+    $('#practice input[type=text]').blur();
     return practice.random();
   });
 }).call(this);
