@@ -33,7 +33,6 @@ kanaflash.app.get '/', (req, res) ->
     app   : kanaflash,
     title : 'Home'
 
-require(__dirname + '/controllers/practice')(kanaflash)
 require(__dirname + '/controllers/kana')(kanaflash)
 
 kanaflash.app.listen(3000)
