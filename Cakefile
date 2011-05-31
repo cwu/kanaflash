@@ -43,6 +43,10 @@ task 'deps', 'Install Dependencies', ->
 
   log "Done installation", green
 
+task 'seed', ->
+  seed = spawn 'sh', ['hiragana.sh']
+  seed.stdout.on 'data', (data) -> print data.toString()
+  seed.stderr.on 'data', (data) -> print data.toString()
 
 task 'server', 'Run the nodejs server', ->
   server = spawn 'coffee', ['-w', 'app.coffee']
