@@ -1,0 +1,5 @@
+./public/*
+./log/*
+./pid/*
+./node_module/*
+./*.swp
