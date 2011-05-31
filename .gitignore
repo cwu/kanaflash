@@ -5,3 +5,4 @@ pids
 *.log
 .monitor
 public/stylesheets/*.css
+.fuse_*

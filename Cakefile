@@ -28,6 +28,12 @@ task 'deps', 'Install Dependencies', ->
   log "installing jade", green
   spawn 'npm', ['install', 'jade']
 
+  log "installing redis", green
+  spawn 'npm', ['install', 'redis']
+
+  log "installing underscore", green
+  spawn 'npm', ['install', 'underscore']
+
   log "installing express", green
   spawn 'npm', ['install', 'express']
   spawn 'npm', ['install', '-g', 'express']
