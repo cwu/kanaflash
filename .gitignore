@@ -6,3 +6,4 @@ pids
 .monitor
 public/stylesheets/*.css
 .fuse_*
+*.rdb

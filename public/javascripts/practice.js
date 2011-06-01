@@ -20,7 +20,7 @@
     }
   };
   $('#practice input[type=text]').live('keyup', function() {
-    if (_.contains(practice.romanji, $(this).val())) {
+    if (_.contains(practice.romanji, $(this).val().toLowerCase())) {
       practice.random();
       $(this).val('');
       return $('#practice').addClass('correct');

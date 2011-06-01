@@ -18,8 +18,8 @@ kanaflash.app.configure () ->
   kanaflash.app.use express.session({ secret: 'your secret here' })
 
   kanaflash.app.use require('stylus').middleware({ src: __dirname + '/public' })
-  kanaflash.app.use kanaflash.app.router
   kanaflash.app.use express.static(__dirname + '/public')
+  kanaflash.app.use kanaflash.app.router
 
 kanaflash.app.configure 'development', () ->
   kanaflash.app.use express.errorHandler({ dumpExceptions: true, showStack: true })
@@ -28,12 +28,21 @@ kanaflash.app.configure 'production', () ->
   kanaflash.app.use express.errorHandler()
 
 # Routes
-kanaflash.app.get '/', (req, res) -> 
+kanaflash.app.get '/', (req, res) ->
   res.render 'index', 
-    app   : kanaflash,
     title : 'Home'
 
+require(__dirname + '/controllers/pages')(kanaflash)
 require(__dirname + '/controllers/kana')(kanaflash)
 
-kanaflash.app.listen(3000)
+kanaflash.app.all '*', (req, res) ->
+  res.render '404', { status : 404, layout : false }
+
+kanaflash.app.error (err, req, res, next) ->
+  if err instanceof NotFound
+    res.render '404', { status : 404, layout : false }
+  else
+    next err
+
+kanaflash.app.listen(4000)
 console.log "Express server listening on port %d", kanaflash.app.address().port

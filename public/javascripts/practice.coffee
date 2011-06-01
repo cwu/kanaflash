@@ -15,7 +15,7 @@ practice =
     }
 
 $('#practice input[type=text]').live 'keyup', () ->
-  if _.contains(practice.romanji, $(this).val())
+  if _.contains(practice.romanji, $(this).val().toLowerCase())
     practice.random()
     $(this).val('')
     $('#practice').addClass('correct')
