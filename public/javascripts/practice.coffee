@@ -5,7 +5,7 @@ practice =
   random  : () ->
     self = this
     $.ajax {
-      url: '/hiragana/random/',
+      url: '/kana/random/',
       method: 'GET',
       success : (data) ->
         self.kana = data.kana

@@ -8,7 +8,7 @@
       var self;
       self = this;
       return $.ajax({
-        url: '/hiragana/random/',
+        url: '/kana/random/',
         method: 'GET',
         success: function(data) {
           self.kana = data.kana;

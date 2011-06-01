@@ -1,7 +1,7 @@
 redis  = require('redis')
 _      = require('underscore')
 
-kanaSet = ['katakana', 'hiragana']
+kanaSet = ['katakana', 'hiragana', 'kana']
     
 module.exports = (kanaflash) ->
   client = redis.createClient(kanaflash.REDIS_PORT)
@@ -20,7 +20,7 @@ module.exports = (kanaflash) ->
   kanaflash.app.get '/:kanaSet/random', (req, res) ->
     client.srandmember "charset:#{ req.params.kanaSet }", (err, kana) ->
       throw err if err
-      client.smembers "charset:#{ req.params.kanaSet }:#{ kana }:romanji", (err, romanji) ->
+      client.smembers "romanji:#{ kana }", (err, romanji) ->
         throw err if err
         res.send {
           kana    : kana

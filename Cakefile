@@ -15,7 +15,10 @@ green = "\033[0;32m"
 reset = "\033[0m"
 
 log = (message, color) ->
-  console.log color + message + reset
+  if color?
+    console.log color + message + reset
+  else
+    console.log message
   
 
 task 'deps', 'Install Dependencies', ->
@@ -44,9 +47,24 @@ task 'deps', 'Install Dependencies', ->
   log "Done installation", green
 
 task 'seed', ->
-  seed = spawn 'sh', ['hiragana.sh']
-  seed.stdout.on 'data', (data) -> print data.toString()
-  seed.stderr.on 'data', (data) -> print data.toString()
+  log "Seeding hiragana"
+  seed = spawn 'sh', ['seed/hiragana.sh']
+  seed.stderr.on 'data', (data) -> print '    ' + data.toString()
+
+  seed.on 'exit', () ->
+    log "Done Seeding Hiragana", green
+
+    log "Seeding hiragana"
+    seed = spawn 'sh', ['seed/katakana.sh']
+    seed.stderr.on 'data', (data) -> print '    ' + data.toString()
+
+    seed.on 'exit', () ->
+      log "Done Seeding Katakana", green
+
+      log "Combining Kana"
+      seed = spawn 'sh', ['seed/kana.sh']
+      log "Done Combining Kana", green
+
 
 task 'server', 'Run the nodejs server', ->
   server = spawn 'coffee', ['-w', 'app.coffee']

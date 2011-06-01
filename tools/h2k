@@ -1,0 +1,7 @@
+#!/usr/bin/env python2.7
+
+import jcconv
+import sys
+
+for x in sys.stdin:
+    print jcconv.hira2kata(x),
