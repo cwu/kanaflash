@@ -36,7 +36,7 @@ require(__dirname + '/controllers/pages')(kanaflash)
 require(__dirname + '/controllers/kana')(kanaflash)
 
 kanaflash.app.all '*', (req, res) ->
-  res.render '404', { status : 404, layout : false }
+  res.render '404', { status : 404, layout : false, path : req.url }
 
 kanaflash.app.error (err, req, res, next) ->
   if err instanceof NotFound
