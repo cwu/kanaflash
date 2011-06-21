@@ -54,7 +54,7 @@ task 'seed', ->
   seed.on 'exit', () ->
     log "Done Seeding Hiragana", green
 
-    log "Seeding hiragana"
+    log "Seeding katakana"
     seed = spawn 'sh', ['seed/katakana.sh']
     seed.stderr.on 'data', (data) -> print '    ' + data.toString()
 

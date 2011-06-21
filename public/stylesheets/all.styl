@@ -1,5 +1,7 @@
 body
   font 18px "Lucida Grande", Helvetica, Arial, sans-serif
+  color #444444
+  background-color #f1f0ff
 
 a, a:visited
   color #00B7FF
@@ -17,6 +19,14 @@ rounded-top()
  border-top-left-radius arguments
  border-top-right-radius arguments
 
+rounded-bottom()
+ -webkit-border-bottom-left-radius arguments
+ -webkit-border-bottom-right-radius arguments
+ -moz-border-radius-bottomleft arguments
+ -moz-border-radius-bottomright arguments
+ border-bottom-left-radius arguments
+ border-bottom-right-radius arguments
+
 #top_banner
   z-index: -1000
   position absolute
@@ -30,28 +40,36 @@ $banner-height = 60px
 
 header
   position relative
+  padding 20px 20px
+  color #ff6f20
   h1
     line-height $banner-height
-    font-size $banner-height - 20px
+    font-size $banner-height
   nav
     display inline-block
     position absolute
-    top 0
-    right 0
+    top 20px 
+    right 20px
     a, a:visited
-      color #000000
+      color #444444
       text-decoration none
-      padding 5px 20px
+      padding 5px 10px
+      margin 5px
       line-height $banner-height
       border-radius 5px
     a:hover
-      color #888888
-      background-color #FFFFFF
+      color #ff6f20
+      background-color #dfe6f0
 
+$radius = 10px
 #main
   width 710px
   margin 0 auto
+  margin-top 40px
   padding 0 5px
+  background-color #ccdcf0
+  border-radius $radius 
+  box-shadow 5px 5px 10px #a3b29f
 
 .center
   text-align center
@@ -69,7 +87,7 @@ a.large-button
   margin 20px 0
 
 #content
-  padding 20px
+  padding 25px
 
 #practice
   width 300px
@@ -77,13 +95,14 @@ a.large-button
   margin 10px auto
   text-align center
   p.kana
+    padding 5px 5px
     font-size (200px/2)
     line-height 200px
 
-#practice.correct
+.correct
   background-color #00FF00
 
-#practice.incorrect
+.incorrect
   background-color #FF0000
 
 .prompt
