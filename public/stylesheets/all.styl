@@ -27,6 +27,11 @@ rounded-bottom()
  border-bottom-left-radius arguments
  border-bottom-right-radius arguments
 
+box-shadow()
+  -webkit-box-shadow arguments
+  -moz-box-shadow arguments
+  box-shadow arguments
+
 #top_banner
   z-index: -1000
   position absolute
@@ -95,12 +100,19 @@ a.large-button
   margin 10px auto
   text-align center
   p.kana
-    padding 5px 5px
     font-size (200px/2)
     line-height 200px
+  input[type=text]
+    width 150px
+
+#textframe
+  margin 0px auto
+  width 160px
+  padding 5px 5px
+  border-radius 5px
 
 .correct
-  background-color #00FF00
+  background-color #5aff3d
 
 .incorrect
   background-color #FF0000

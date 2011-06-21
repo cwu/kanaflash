@@ -11,14 +11,15 @@ practice =
         self.kana = data.kana
         self.romanji = data.romanji
         $('#practice p.kana').text(self.kana)
-        $('#practice').removeClass('correct')
+        clearTimeout(self.timerID)
+        self.timerID = setTimeout (()->$('#textframe').removeClass('correct')), 888
     }
 
 $('#practice input[type=text]').live 'keyup', () ->
   if _.contains(practice.romanji, $(this).val().toLowerCase())
     practice.random()
     $(this).val('')
-    $('#practice').addClass('correct')
+    $('#textframe').addClass('correct')
 
 $('#practice input[type=text]').live 'focus', () ->
   if $(this).hasClass('prompt')

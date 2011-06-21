@@ -14,7 +14,10 @@
           self.kana = data.kana;
           self.romanji = data.romanji;
           $('#practice p.kana').text(self.kana);
-          return $('#practice').removeClass('correct');
+          clearTimeout(self.timerID);
+          return self.timerID = setTimeout((function() {
+            return $('#textframe').removeClass('correct');
+          }), 888);
         }
       });
     }
@@ -23,7 +26,7 @@
     if (_.contains(practice.romanji, $(this).val().toLowerCase())) {
       practice.random();
       $(this).val('');
-      return $('#practice').addClass('correct');
+      return $('#textframe').addClass('correct');
     }
   });
   $('#practice input[type=text]').live('focus', function() {
