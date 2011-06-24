@@ -7,3 +7,4 @@ pids
 public/stylesheets/*.css
 .fuse_*
 *.rdb
+.nohup
