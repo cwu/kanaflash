@@ -1,22 +1,25 @@
 !!! 5
 html
   head
-    title #{title} - Kana Flash
-
-    script(src="/javascripts/html5.js")
-    - if (app.NODE_ENV == 'production')
-      script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js")
-      script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js")
+    - if (typeof(title) != 'undefined')
+      title #{title} - Kana Flash
     - else
-      script(src="/javascripts/jquery-1.6.1.js")
-      script(src="/javascripts/jquery-ui-1.8.13.js")
-    script(src="/javascripts/underscore-min.js")
-    script(src="/javascripts/backbone-min.js")
+      title Kana Flash
 
     link(rel='stylesheet', href='/stylesheets/reset.css')
-    link(rel='stylesheet', href='/stylesheets/jquery-ui-1.8.13.css')
     link(rel='stylesheet', href='/stylesheets/all.css')
     link(rel='stylesheet', href='/stylesheets/kana.css')
+
+    script(src="/javascripts/lib/html5.js")
+    - if (NODE_ENV == 'production' )
+      script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js")
+      script(src="/javascripts/lib/underscore-min.js")
+      script(src="/javascripts/lib/backbone-min.js")
+    - else
+      script(src="/javascripts/lib/jquery-1.6.1.js")
+      script(src="/javascripts/lib/underscore.js")
+      script(src="/javascripts/lib/backbone.js")
+
 
     script(type="text/javascript")
       var _gaq = _gaq || [];

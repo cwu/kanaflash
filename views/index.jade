@@ -1,6 +1,8 @@
 p 
   |Welcome to Kana Flash. It's a simple way of learning Hiragana and Katakana.
 
+#kana-filter.center
+
 #practice
   p.kana ...
   #textframe
@@ -8,3 +10,15 @@ p
   p.response
 
 script(src="/javascripts/practice.js")
+
+script(type="text/template", id="kanafilter-template")
+  <% if (hiragana) %>
+  a.select-button.selected(href="#", data-charset="hiragana") Hiragana
+  <% else %>
+  a.select-button.unselected(href="#", data-charset="hiragana") Hiragana
+
+  <% if (katakana) %>
+  a.select-button.selected(href="#", data-charset="katakana") Katakana
+  <% else %>
+  a.select-button.unselected(href="#", data-charset="katakana") Katakana
+
