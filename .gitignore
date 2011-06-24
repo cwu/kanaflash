@@ -5,6 +5,8 @@ pids
 *.log
 .monitor
 public/stylesheets/*.css
+public/javascripts/*.js
+!public/javascripts/lib/*.js
 .fuse_*
 *.rdb
 .nohup
