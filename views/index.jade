@@ -13,12 +13,12 @@ script(src="/javascripts/practice.js")
 
 script(type="text/template", id="kanafilter-template")
   <% if (hiragana) %>
-  a.select-button.selected(href="#", data-charset="hiragana") Hiragana
+  span.select-button.selected(data-charset="hiragana") Hiragana
   <% else %>
-  a.select-button.unselected(href="#", data-charset="hiragana") Hiragana
+  span.select-button.unselected(data-charset="hiragana") Hiragana
 
   <% if (katakana) %>
-  a.select-button.selected(href="#", data-charset="katakana") Katakana
+  span.select-button.selected(data-charset="katakana") Katakana
   <% else %>
-  a.select-button.unselected(href="#", data-charset="katakana") Katakana
+  span.select-button.unselected(data-charset="katakana") Katakana
 

@@ -56,7 +56,7 @@ $(document).ready () ->
       this.model.view = this
       this.render()
     render     : () ->
-      $(this.el).html this.template(this.model.toJSON()) #this.template(this.model.toJSON())
+      $(this.el).html this.template(this.model.toJSON())
       return this
     select     : (e) ->
       if this.model.select $(e.target).data('charset')
@@ -71,6 +71,9 @@ $(document).ready () ->
 
   window.kanaFilter = new KanaFilter
   window.kanaFilterView = new KanaFilterView { model : window.kanaFilter }
+
+  $('#practice input[type=text]').blur()
+  practice.random()
 
 $('#practice input[type=text]').live 'keyup', () ->
   if _.contains(practice.romanji, $(this).val().toLowerCase())
@@ -87,8 +90,4 @@ $('#practice input[type=text]').live 'blur', () ->
   if $.trim($(this).val()) == ''
     $(this).addClass('prompt')
     $(this).val('Enter Romanji...')
-
-$(document).ready () ->
-  $('#practice input[type=text]').blur()
-  practice.random()
 

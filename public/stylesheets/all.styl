@@ -32,6 +32,14 @@ box-shadow()
   -moz-box-shadow arguments
   box-shadow arguments
 
+no-select()
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+
+
 #top_banner
   z-index: -1000
   position absolute
@@ -135,6 +143,8 @@ ul#kana_select.horizontal
   display inline-block
   text-align center
   margin 5px 5px
+  cursor pointer
+  no-select 1
 
 .select-button.selected
   background-color #0ADB0D
@@ -145,9 +155,4 @@ ul#kana_select.horizontal
   color #FFFFFF
 
 .no-select
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-
+  no-select 1
