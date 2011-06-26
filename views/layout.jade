@@ -2,7 +2,7 @@
 html
   head
     - if (typeof(title) != 'undefined')
-      title #{title} - Kana Flash
+      title #{ title } - Kana Flash
     - else
       title Kana Flash
 
@@ -10,18 +10,23 @@ html
     link(rel='stylesheet', href='/stylesheets/all.css')
     link(rel='stylesheet', href='/stylesheets/kana.css')
 
+    - each css in cssIncludes.get()
+      link(rel='stylesheet', href='/stylesheets/' + css + '.css')
+
     script(src="/javascripts/lib/html5.js")
     - if (NODE_ENV == 'production' )
       script(src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js")
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js")
-      script(src="/javascripts/lib/underscore-min.js")
-      script(src="/javascripts/lib/backbone-min.js")
+      script(src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.6/underscore-min.js")
+      script(src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.3.3/backbone-min.js")
     - else
       script(src="/javascripts/lib/json2.js")
       script(src="/javascripts/lib/jquery-1.6.1.js")
       script(src="/javascripts/lib/underscore.js")
       script(src="/javascripts/lib/backbone.js")
 
+    - each js in jsIncludes.get()
+      script(src='/javascripts/' + js  + '.js')
 
     script(type="text/javascript")
       var _gaq = _gaq || [];

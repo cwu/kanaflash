@@ -1,0 +1,25 @@
+- cssIncludes.add('stats')
+h1 Summary
+table.summary
+  tr
+    th Kana Set:
+    td= set
+  tr
+    th # Chars:
+    td= count
+  tr
+    th Total:
+    td= total
+
+h1 Details
+table
+  thead
+    th Kana
+    th Count
+    th Percentage %
+  tbody
+    - each stat in stats
+      tr
+        td #{ stat.kana }
+        td #{ stat.count }
+        td #{ stat.percent.toFixed(2) }
