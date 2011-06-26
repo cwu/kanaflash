@@ -30,6 +30,7 @@ app.configure 'production', () ->
 # Controllers
 require(__dirname + '/controllers/pages')(app)
 require(__dirname + '/controllers/kana')(app)
+require(__dirname + '/controllers/kanafilter')(app)
 
 app.all '*', (req, res) ->
   res.render '404', { status : 404, layout : false, path : req.url }
@@ -40,5 +41,5 @@ app.error (err, req, res, next) ->
   else
     next err
 
-app.listen(4000)
+app.listen(global.process.env.PORT || 4000)
 console.log "Express server listening on port %d", app.address().port

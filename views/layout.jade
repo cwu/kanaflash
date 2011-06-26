@@ -12,10 +12,12 @@ html
 
     script(src="/javascripts/lib/html5.js")
     - if (NODE_ENV == 'production' )
+      script(src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js")
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js")
       script(src="/javascripts/lib/underscore-min.js")
       script(src="/javascripts/lib/backbone-min.js")
     - else
+      script(src="/javascripts/lib/json2.js")
       script(src="/javascripts/lib/jquery-1.6.1.js")
       script(src="/javascripts/lib/underscore.js")
       script(src="/javascripts/lib/backbone.js")

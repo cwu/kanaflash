@@ -26,16 +26,16 @@ $(document).ready () ->
         return "Must select at least one character set"
     select   : (charset) ->
       switch charset
-        when 'hiragana' then return this.set { hiragana : true }
-        when 'katakana' then return this.set { katakana : true }
+        when 'hiragana' then return this.save { hiragana : true }
+        when 'katakana' then return this.save { katakana : true }
         else return false
     unselect : (charset) ->
       switch charset
-        when 'hiragana' then return this.set { hiragana : false }
-        when 'katakana' then return this.set { katakana : false }
+        when 'hiragana' then return this.save { hiragana : false }
+        when 'katakana' then return this.save { katakana : false }
         else return false
     url      : () ->
-      return '/kanafilter'
+      return '/kanafilter/'
     kanaUrl : () ->
       if this.get("hiragana") and this.get("katakana")
         return 'kana'
@@ -70,10 +70,12 @@ $(document).ready () ->
       return this
 
   window.kanaFilter = new KanaFilter
-  window.kanaFilterView = new KanaFilterView { model : window.kanaFilter }
+  window.kanaFilter.fetch
+    success : (model, response) ->
+      window.kanaFilterView = new KanaFilterView { model : window.kanaFilter }
+      practice.random()
 
   $('#practice input[type=text]').blur()
-  practice.random()
 
 $('#practice input[type=text]').live 'keyup', () ->
   if _.contains(practice.romanji, $(this).val().toLowerCase())
