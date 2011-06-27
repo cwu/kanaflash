@@ -58,6 +58,7 @@ redis-cli -p $PORT sadd "romanji:レ" 're'
 redis-cli -p $PORT sadd "romanji:ロ" 'ro'
 
 redis-cli -p $PORT sadd "romanji:ワ" 'wa'
+redis-cli -p $PORT sadd "romanji:ヲ" 'wo'
 redis-cli -p $PORT sadd "romanji:ヲ" 'o'
 redis-cli -p $PORT sadd "romanji:ン" 'n'
 
