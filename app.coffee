@@ -1,5 +1,7 @@
 express    = require('express')
+RedisStore = require('connect-redis')(express)
 property   = require('./lib/property')
+config     = require('./config')
 
 app = module.exports = express.createServer()
 
@@ -14,7 +16,9 @@ app.configure () ->
   app.use express.bodyParser()
   app.use express.methodOverride()
   app.use express.cookieParser()
-  app.use express.session({ secret: 'your secret here' })
+  app.use express.session
+    store  : new RedisStore { db : "1" }
+    secret : 'your secret here'
 
   app.use require('stylus').middleware({ src: __dirname + '/public' })
   app.use express.static(__dirname + '/public')
@@ -50,5 +54,5 @@ app.error (err, req, res, next) ->
   else
     next err
 
-app.listen(global.process.env.PORT || 4000)
+app.listen(global.process.env.PORT || config.SERVER_PORT)
 console.log "Express server listening on port %d", app.address().port

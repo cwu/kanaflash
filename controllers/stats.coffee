@@ -6,6 +6,7 @@ kanaSet = ['katakana', 'hiragana', 'kana']
     
 module.exports = (app) ->
   client = redis.createClient(config.REDIS_PORT)
+  client.select config.DATA_DB
   client.on 'error', (err) ->
     console.log "Error: " + err
 
