@@ -17,6 +17,7 @@ module.exports = (app) ->
 
   app.get '/:kanaSet/index', (req, res) ->
     client.smembers "charset:#{ req.params.kanaSet }", (err, data) ->
+      res.contentType "json"
       res.send data
 
   app.get '/:kanaSet/random', (req, res) ->
@@ -31,6 +32,7 @@ module.exports = (app) ->
 
         res.header "Cache-Control", "no-cache, must-revalidate"
         res.header "Pragma", "no-cache"
+        res.contentType "json"
         res.send
           kana    : kana
           romanji : romanji
