@@ -26,6 +26,7 @@ def find_new_secret():
 def deploy():
     with cd(code_dir):
         run('git pull')
+        find_new_secret()
         run('npm install')
         compile_js()
         minify()
