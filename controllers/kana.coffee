@@ -31,7 +31,6 @@ module.exports = (app) ->
         throw err if err
 
         res.header "Cache-Control", "no-cache, must-revalidate"
-        res.header "Pragma", "no-cache"
         res.contentType "json"
         res.send
           kana    : kana

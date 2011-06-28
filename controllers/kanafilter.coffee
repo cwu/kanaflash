@@ -8,6 +8,7 @@ module.exports = (app) ->
   app.get '/kanafilter/', (req, res) ->
     req.session.kanaFilter = defaults unless req.session.kanaFilter?
     res.contentType "json"
+    res.header "Cache-Control", "no-cache, must-revalidate"
     res.send req.session.kanaFilter
 
   app.post '/kanafilter/', (req, res) ->
