@@ -8,7 +8,6 @@ def compile_js():
     with cd(code_dir):
         run('coffee -c public/javascripts')
 
-
 def minify_js():
     with cd(code_dir):
         raw_js_files = run('ls public/javascripts/*.js')
@@ -20,6 +19,9 @@ def minify_js():
 def minify():
     with cd(code_dir):
         minify_js()
+
+def find_new_secret():
+    run('sh /opt/tools/kanasecret')
 
 def deploy():
     with cd(code_dir):

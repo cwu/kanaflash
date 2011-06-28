@@ -19,7 +19,7 @@ app.configure () ->
   app.use express.cookieParser()
   app.use express.session
     store  : new RedisStore { db : "1" }
-    secret : 'your secret here'
+    secret : config.SESSION_SECRET
 
   app.use require('stylus').middleware
     src      : __dirname + '/public'
