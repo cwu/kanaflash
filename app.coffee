@@ -23,7 +23,7 @@ app.configure () ->
 
   app.use require('stylus').middleware
     src      : __dirname + '/public'
-    compress : NODE_ENV == 'production'
+    compress : app.NODE_ENV == 'production'
   app.use express.static(__dirname + '/public')
 
   app.helpers
@@ -58,4 +58,4 @@ app.error (err, req, res, next) ->
     next err
 
 app.listen(global.process.env.PORT || config.SERVER_PORT)
-console.log "Express server listening on port %d", app.address().port
+console.log "Express server listening on port %d in %s mode", app.address().port, app.NODE_ENV
