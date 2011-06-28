@@ -4,6 +4,7 @@ property   = require('./lib/property')
 config     = require('./config')
 
 app = module.exports = express.createServer()
+app.NODE_ENV = global.process.env.NODE_ENV || 'development'
 
 public_dir = __dirname + '/public'
 
@@ -20,11 +21,13 @@ app.configure () ->
     store  : new RedisStore { db : "1" }
     secret : 'your secret here'
 
-  app.use require('stylus').middleware({ src: __dirname + '/public' })
+  app.use require('stylus').middleware
+    src      : __dirname + '/public'
+    compress : NODE_ENV == 'production'
   app.use express.static(__dirname + '/public')
 
   app.helpers
-    NODE_ENV : global.process.env.NODE_ENV || 'development'
+    NODE_ENV : app.NODE_ENV
 
   app.dynamicHelpers
     req         : (req) -> req

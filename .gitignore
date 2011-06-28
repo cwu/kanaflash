@@ -9,4 +9,5 @@ public/javascripts/*.js
 !public/javascripts/lib/*.js
 .fuse_*
 *.rdb
-.nohup
+nohup.out
+*.pyc
