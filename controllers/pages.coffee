@@ -10,3 +10,7 @@ module.exports = (app) ->
   app.get '/contact/', (req, res) ->
     res.render 'contact'
       title : 'Contact'
+
+  app.get '/about/', (req, res) ->
+    res.render 'about'
+      title : 'About'
