@@ -3,3 +3,7 @@
 ./pid/*
 ./node_module/*
 ./*.swp
+./test/*
+Cakefile
+dump.rdb
+fabfile.py

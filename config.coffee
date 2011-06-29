@@ -4,4 +4,5 @@ module.exports =
   SESSION_DB       : "1"
   SERVER_PORT      : 4000
   SESSION_SECRET   : "your secret here"
+  MAX_RAND_TRIES   : 5
   anonUserLifetime : 10*3600

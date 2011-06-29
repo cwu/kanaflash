@@ -18,7 +18,7 @@ app.configure () ->
   app.use express.methodOverride()
   app.use express.cookieParser()
   app.use express.session
-    store  : new RedisStore { db : "1" }
+    store  : new RedisStore { db : config.SESSION_DB }
     secret : config.SESSION_SECRET
 
   app.use require('stylus').middleware

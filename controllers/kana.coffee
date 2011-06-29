@@ -21,8 +21,13 @@ module.exports = (app) ->
       res.send data
 
   app.get '/:kanaSet/random', (req, res) ->
-    client.srandmember "charset:#{ req.params.kanaSet }", (err, kana) ->
+    randAttempt = 0
+    randCallback = (err, kana) ->
       throw err if err
+      randAttempt++
+
+      if req.query.prevKana == kana and randAttempt < config.MAX_RAND_TRIES
+        return client.srandmember "charset:#{ req.params.kanaSet }", randCallback
 
       client.hincrby "stats:rand:#{ req.params.kanaSet }", kana, 1, (err, status) ->
         console.warn err if err
@@ -35,3 +40,6 @@ module.exports = (app) ->
         res.send
           kana    : kana
           romanji : romanji
+
+    client.srandmember "charset:#{ req.params.kanaSet }", randCallback
+

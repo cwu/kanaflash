@@ -2,7 +2,7 @@
   "name" : "kanaflash",
   "version" : "0.0.1",
   "engines" : {
-    "node" : ">=0.5.2"
+    "node" : ">=0.4.9"
   },
   "dependencies" : {
     "connect" : ">=1.4.2",
@@ -13,7 +13,8 @@
     "connect-redis":">=1.0.6",
     "coffee-script":">=1.1.1",
     "underscore":">=1.1.6",
-    "vows":">=0.5.8"
+    "vows":">=0.5.8",
+    "tobi":">=0.2.2"
   },
   "private" : "true"
 }

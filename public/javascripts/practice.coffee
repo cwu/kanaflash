@@ -8,6 +8,7 @@ practice =
     $.ajax
       url     : "/#{ urlbase }/random/"
       type    : 'GET'
+      data    : { prevKana : self.kana }
       success : (data) ->
         self.kana = data.kana
         self.romanji = data.romanji
