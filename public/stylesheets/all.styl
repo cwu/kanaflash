@@ -4,7 +4,7 @@ body
   background-color #f1f0ff
 
 a, a:visited
-  color #00B7FF
+  color #3e8ef0
 
 border-radius()
  -webkit-border-radius arguments
@@ -108,13 +108,17 @@ a.large-button
   margin 10px auto
   text-align center
   p.kana
-    font-size (200px/2)
-    line-height 200px
+    font-size 100px
+    line-height 100px*1.5
   input[type=text]
     width 150px
+  p.response
+    font-size 22px
+    line-height 22px
+    display inline-block
 
 #textframe
-  margin 0px auto
+  margin 10px auto
   width 160px
   padding 5px 5px
   border-radius 5px
@@ -137,6 +141,7 @@ ul#kana_select.horizontal
 .select-button
   border-radius 5px
   text-decoration none
+  color #FFFFFF
   padding 5px 7px
   font-size 20px
   font-weight bold
@@ -147,12 +152,44 @@ ul#kana_select.horizontal
   no-select 1
 
 .select-button.selected
-  background-color #0ADB0D
-  color #FFFFFF
+  background-color #18DB1B
+
+.select-button.selected:hover
+  background-color #00f000
 
 .select-button.unselected
-  background-color #666666
-  color #FFFFFF
+  background-color #767676
+
+.select-button.unselected:hover
+  background-color #888888
 
 .no-select
   no-select 1
+
+.skip-button
+  border-radius 5px
+  margin 10px auto
+  width 40px
+  padding 2px 0px
+  background-color #18DB1B
+  color #FFFFFF
+  text-decoration none
+  font-size 22px
+  font-weight bold
+  text-align center
+  cursor pointer
+  no-select 1
+
+.skip-button:hover
+  background-color #00f000
+
+#spacer
+  height 2em
+
+footer
+  font-size 10px
+  color #444444
+  text-align center
+  height 4em
+  a, a:visited
+    color #444444
