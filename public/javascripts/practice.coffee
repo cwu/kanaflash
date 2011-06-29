@@ -69,6 +69,7 @@ $(document).ready () ->
         practice.random()
       return this
 
+
   window.kanaFilter = new KanaFilter
   window.kanaFilter.fetch
     success : (model, response) ->
@@ -92,4 +93,17 @@ $('#practice input[type=text]').live 'blur', () ->
   if $.trim($(this).val()) == ''
     $(this).addClass('prompt')
     $(this).val('Enter Romanji...')
+
+skipBtnTimerRunning = false
+$('#practice .skip-button').live 'click', () ->
+  if not skipBtnTimerRunning
+    skipBtnTimerRunning = true
+    $('#practice p.response').text(practice.romanji.join(', '))
+    clearTimeout skipBtnTimerID
+    skipBtnTimerID = setTimeout ()->
+      #TODO make it fade instead
+      $('#practice p.response').text('')
+      practice.random()
+      skipBtnTimerRunning = false
+    , 1000
 
