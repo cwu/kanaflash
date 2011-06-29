@@ -103,6 +103,7 @@ $('#practice .skip-button').live 'click', () ->
     skipBtnTimerID = setTimeout ()->
       #TODO make it fade instead
       $('#practice p.response').text('')
+      $('#practice input[type=text]').val('')
       practice.random()
       skipBtnTimerRunning = false
     , 1000
