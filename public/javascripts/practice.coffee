@@ -1,111 +1,138 @@
-practice =
-  kana    : ''
-  romanji : []
-  guess   : ''
-  random  : () ->
+window.FlashCard = Backbone.Model.extend
+  defaults  :
+    kana    : ''
+    romanji : []
+    charset : 'kana'
+  initialize : () ->
+    _.bindAll this, 'random'
+  isWrong    : (guess) -> false
+  isCorrect  : (guess) ->  _.contains(this.get('romanji'), guess)
+  random     : (callback) ->
     self = this
-    urlbase = window.kanaFilter.kanaUrl()
     $.ajax
-      url     : "/#{ urlbase }/random/"
-      type    : 'GET'
-      data    : { prevKana : self.kana }
-      success : (data) ->
-        self.kana = data.kana
-        self.romanji = data.romanji
-        $('#practice p.kana').text(self.kana)
-        clearTimeout self.timerID
-        self.timerID = setTimeout (()->$('#textframe').removeClass('correct')), 888
+      url : "#{ this.get('charset') }/random/"
+      data : { prevKana : this.kana }
+      success : (flashCard) ->
+        self.set flashCard
+        callback() if callback?
+
+
+window.KanaFilter = Backbone.Model.extend
+  defaults :
+    hiragana : false
+    katakana : false
+  validate : (attrs) ->
+    desiredModel = _.extend(this.toJSON(), attrs)
+    if not desiredModel.hiragana and not desiredModel.katakana
+      return "Must select at least one character set"
+  select   : (charset) ->
+    switch charset
+      when 'hiragana' then return this.save { hiragana : true }
+      when 'katakana' then return this.save { katakana : true }
+      else return false
+  unselect : (charset) ->
+    switch charset
+      when 'hiragana' then return this.save { hiragana : false }
+      when 'katakana' then return this.save { katakana : false }
+      else return false
+  url      : () ->
+    return '/kanafilter/'
+  kanaUrl : () ->
+    if this.get("hiragana") and this.get("katakana")
+      return 'kana'
+    else if this.get("hiragana")
+      return 'hiragana'
+    else if this.get("katakana")
+      return 'katakana'
+    else
+      throw Error("invalid KanaFilter model state")
 
 $(document).ready () ->
-  window.KanaFilter = Backbone.Model.extend
-    defaults :
-      hiragana : true
-      katakana : true
-    validate : (attrs) ->
-      desiredModel = _.extend(this.toJSON(), attrs)
-      if not desiredModel.hiragana and not desiredModel.katakana
-        return "Must select at least one character set"
-    select   : (charset) ->
-      switch charset
-        when 'hiragana' then return this.save { hiragana : true }
-        when 'katakana' then return this.save { katakana : true }
-        else return false
-    unselect : (charset) ->
-      switch charset
-        when 'hiragana' then return this.save { hiragana : false }
-        when 'katakana' then return this.save { katakana : false }
-        else return false
-    url      : () ->
-      return '/kanafilter/'
-    kanaUrl : () ->
-      if this.get("hiragana") and this.get("katakana")
-        return 'kana'
-      else if this.get("hiragana")
-        return 'hiragana'
-      else if this.get("katakana")
-        return 'katakana'
-      else
-        throw Error("invalid KanaFilter model state")
-
   window.KanaFilterView = Backbone.View.extend
-    el         : $("#kana-filter")
-    template   : _.template $('#kanafilter-template').html()
+    template : _.template $('#kanafilter-template').html()
     events     :
       "click .select-button.selected"   : "unselect"
       "click .select-button.unselected" : "select"
     initialize : () ->
-      this.model.view = this
-      this.render()
+      _.bindAll this, 'render'
+      this.model.bind 'change', this.render
     render     : () ->
       $(this.el).html this.template(this.model.toJSON())
       return this
     select     : (e) ->
-      if this.model.select $(e.target).data('charset')
-        this.render()
-        practice.random()
+      this.model.select $(e.target).data('charset')
       return this
     unselect   : (e) ->
-      if this.model.unselect $(e.target).data('charset')
-        this.render()
-        practice.random()
+      this.model.unselect $(e.target).data('charset')
       return this
 
+  window.FlashCardView = Backbone.View.extend
+    events :
+      "keyup input[type=text]" : "guess"
+    initialize : () ->
+      _.bindAll this, 'render', 'random', 'guess'
+      this.model.bind 'change', this.render
+    random : () ->
+      self = this
+      this.model.random () ->
+        clearTimeout self.timerID
+        self.timerID = setTimeout ()->
+          self.$('.textframe').removeClass('correct')
+          self.$('input[type=text]').val('')
+        , 888
+    guess : (e) ->
+      guess = $(e.target).val()
+      if this.model.isCorrect(guess)
+        this.$('.textframe').addClass('correct')
+        this.random()
+    render : () ->
+      this.$('p.kana').text this.model.get('kana')
+      return this
 
+$(document).ready () ->
   window.kanaFilter = new KanaFilter
-  window.kanaFilter.fetch
-    success : (model, response) ->
-      window.kanaFilterView = new KanaFilterView { model : window.kanaFilter }
-      practice.random()
+  window.flashCard = new FlashCard
 
-  $('#practice input[type=text]').blur()
+  window.kanaFilterView = new KanaFilterView
+    el       : '#kana-filter'
+    model    : window.kanaFilter
 
-$('#practice input[type=text]').live 'keyup', () ->
-  if _.contains(practice.romanji, $(this).val().toLowerCase())
-    practice.random()
-    $(this).val('')
-    $('#textframe').addClass('correct')
+  window.flashCardView = new FlashCardView
+    el       : '#flashcard'
+    model    : window.flashCard
 
-$('#practice input[type=text]').live 'focus', () ->
+  kanaFilter.bind 'change', (model) ->
+    flashCard.set { charset : model.kanaUrl() }
+    flashCard.random()
+
+  flashCardView.$('input[type=text]').focus()
+
+  kanaFilter.fetch
+    success : () ->
+      kanaFilterView.render()
+      flashCardView.render()
+
+$('#flashcard input[type=text]').live 'focus', () ->
   if $(this).hasClass('prompt')
     $(this).removeClass('prompt')
     $(this).val('')
 
-$('#practice input[type=text]').live 'blur', () ->
+$('#flashcard input[type=text]').live 'blur', () ->
   if $.trim($(this).val()) == ''
     $(this).addClass('prompt')
     $(this).val('Enter Romanji...')
 
 skipBtnTimerRunning = false
-$('#practice .skip-button').live 'click', () ->
+$('#flashcard .skip-button').live 'click', () ->
   if not skipBtnTimerRunning
     skipBtnTimerRunning = true
-    $('#practice p.response').text(practice.romanji.join(', '))
+    $('#flashcard p.response').text(window.flashCard.get('romanji').join(', '))
     clearTimeout skipBtnTimerID
     skipBtnTimerID = setTimeout ()->
       #TODO make it fade instead
-      $('#practice p.response').text('')
-      $('#practice input[type=text]').val('')
-      practice.random()
+      $('#flashcard p.response').text('')
+      $('#flashcard input[type=text]').val('')
+      window.flashCardView.random()
       skipBtnTimerRunning = false
     , 1000
 

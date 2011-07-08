@@ -2,14 +2,15 @@
 
 
 #kana-filter.center
+  span.select-button.unselected(data-charset="hiragana") Hiragana
+  span.select-button.unselected(data-charset="katakana") Katakana
 
-#practice
+#flashcard
   p.kana ...
-  #textframe
+  .textframe
     input(type="text", autocomplete="off")
   p.response
   .skip-button &gt;
-
 
 script(type="text/template", id="kanafilter-template")
   <% if (hiragana) %>
