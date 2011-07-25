@@ -11,7 +11,7 @@ window.FlashCard = Backbone.Model.extend
     self = this
     $.ajax
       url : "#{ this.get('charset') }/random/"
-      data : { prevKana : this.kana }
+      data : { prevKana : this.get('kana') }
       success : (flashCard) ->
         self.set flashCard
         callback() if callback?
