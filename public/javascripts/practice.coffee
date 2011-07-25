@@ -1,3 +1,5 @@
+String.prototype.startsWith = (s) -> this.lastIndexOf(s, 0) == 0
+
 window.FlashCard = Backbone.Model.extend
   defaults  :
     kana    : ''
@@ -5,7 +7,9 @@ window.FlashCard = Backbone.Model.extend
     charset : 'kana'
   initialize : () ->
     _.bindAll this, 'random'
-  isWrong    : (guess) -> false
+  isWrong    : (guess) ->
+    minLength = (_.max this.get('romanji'), (s) -> s.length || 0).length
+    guess.length >= minLength and not _.any this.get('romanji'), (s) -> s.startsWith(guess)
   isCorrect  : (guess) ->  _.contains(this.get('romanji'), guess)
   random     : (callback) ->
     self = this
@@ -70,21 +74,24 @@ $(document).ready () ->
     events :
       "keyup input[type=text]" : "guess"
     initialize : () ->
-      _.bindAll this, 'render', 'random', 'guess'
+      _.bindAll this, 'render', 'guess'
       this.model.bind 'change', this.render
-    random : () ->
-      self = this
-      this.model.random () ->
-        clearTimeout self.timerID
-        self.timerID = setTimeout ()->
-          self.$('.textframe').removeClass('correct')
-          self.$('input[type=text]').val('')
-        , 888
     guess : (e) ->
       guess = $(e.target).val()
       if this.model.isCorrect(guess)
         this.$('.textframe').addClass('correct')
-        this.random()
+        this.$('.textframe').removeClass('incorrect')
+        this.$('input[type=text]').val('')
+        self = this
+        this.model.random () ->
+          clearTimeout self.timerID
+          self.timerID = setTimeout ()->
+            self.$('.textframe').removeClass('correct')
+          , 888
+      else if this.model.isWrong(guess)
+        this.$('.textframe').addClass('incorrect')
+      else
+        this.$('.textframe').removeClass('incorrect')
     render : () ->
       this.$('p.kana').text this.model.get('kana')
       return this
@@ -132,7 +139,7 @@ $('#flashcard .skip-button').live 'click', () ->
       #TODO make it fade instead
       $('#flashcard p.response').text('')
       $('#flashcard input[type=text]').val('')
-      window.flashCardView.random()
+      window.flashCard.random()
       skipBtnTimerRunning = false
     , 1000
 
