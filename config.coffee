@@ -7,4 +7,5 @@ module.exports =
   SESSION_SECRET      : "your secret here"
   MAX_RAND_TRIES      : 5
   ANON_USER_LIFETIME  : 10*3600
+  ANON_USER_ID_LEN    : 32
   SAVED_WRONG_GUESSES : 10

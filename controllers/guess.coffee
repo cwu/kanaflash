@@ -21,6 +21,6 @@ module.exports = (app) ->
 
     client.hincrby statKey, guess.guessResult, 1
     client.lpush "#{ statKey }:guesses", guess.guess, (err, status) ->
-      client.ltrim "#{ statKey }:guesses", config.SAVED_WRONG_GUESSES
+      client.ltrim "#{ statKey }:guesses", 0, config.SAVED_WRONG_GUESSES
 
     res.send 200
