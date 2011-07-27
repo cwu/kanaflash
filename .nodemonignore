@@ -5,5 +5,5 @@
 ./*.swp
 ./test/*
 Cakefile
-dump.rdb
+\w*\.rdb$
 fabfile.py
