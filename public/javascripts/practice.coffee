@@ -5,6 +5,7 @@ window.FlashCard = Backbone.Model.extend
     kana    : ''
     romanji : []
     charset : 'kana'
+    guessed : false
   initialize : () ->
     _.bindAll this, 'random'
   isWrong    : (guess) ->
@@ -17,6 +18,7 @@ window.FlashCard = Backbone.Model.extend
       url : "#{ this.get('charset') }/random/"
       data : { prevKana : this.get('kana') }
       success : (flashCard) ->
+        flashCard.guessed = false
         self.set flashCard
         callback() if callback?
 
@@ -51,6 +53,16 @@ window.KanaFilter = Backbone.Model.extend
     else
       throw Error("invalid KanaFilter model state")
 
+signalGuess = (flashCard, guess, guessResult) ->
+  $.ajax
+    url  : "/guess/"
+    type : "POST"
+    data :
+      guess       : guess
+      guessResult : guessResult
+      kana        : flashCard.get('kana')
+      charset     : flashCard.get('charset')
+
 $(document).ready () ->
   window.KanaFilterView = Backbone.View.extend
     template : _.template $('#kanafilter-template').html()
@@ -80,8 +92,10 @@ $(document).ready () ->
       guess = $(e.target).val()
       if this.model.isCorrect(guess)
         this.$('.textframe').addClass('correct')
-        this.$('.textframe').removeClass('incorrect')
+        this.$('.textframe').removeClass('wrong')
         this.$('input[type=text]').val('')
+        signalGuess(this.model, guess, 'correct')
+        this.model.set({ guessed : true })
         self = this
         this.model.random () ->
           clearTimeout self.timerID
@@ -89,9 +103,12 @@ $(document).ready () ->
             self.$('.textframe').removeClass('correct')
           , 888
       else if this.model.isWrong(guess)
-        this.$('.textframe').addClass('incorrect')
+        if not this.model.get('guessed')
+          signalGuess(this.model, guess, 'wrong')
+          this.model.set({ guessed : true })
+        this.$('.textframe').addClass('wrong')
       else
-        this.$('.textframe').removeClass('incorrect')
+        this.$('.textframe').removeClass('wrong')
     render : () ->
       this.$('p.kana').text this.model.get('kana')
       return this

@@ -8,7 +8,7 @@ module.exports = (app) ->
   client = redis.createClient(config.REDIS_PORT)
   client.select config.DATA_DB
   client.on 'error', (err) ->
-    console.log "Error: " + err
+    console.log "Error: #{ err }"
 
   app.param 'kanaSet', (req, res, next, set) ->
     if not _.contains(kanaSet, set)

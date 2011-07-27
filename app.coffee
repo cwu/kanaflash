@@ -47,6 +47,7 @@ require(__dirname + '/controllers/pages')(app)
 require(__dirname + '/controllers/kana')(app)
 require(__dirname + '/controllers/kanafilter')(app)
 require(__dirname + '/controllers/stats')(app)
+require(__dirname + '/controllers/guess')(app)
 
 app.all '*', (req, res) ->
   res.render '404', { status : 404, layout : false }
