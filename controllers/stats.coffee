@@ -10,7 +10,7 @@ intify = (obj, fields...) ->
     
 module.exports = (app) ->
   client = redis.createClient(config.REDIS_PORT)
-  client.select config.DATA_DB
+  client.select config.STAT_DB
   client.on 'error', (err) ->
     console.log "Error: " + err
 

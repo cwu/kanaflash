@@ -1,5 +1,5 @@
 redis  = require('redis')
-config = require('redis')
+config = require('../config')
 _      = require('underscore')
 
 allowedGuessResults = ['correct', 'wrong', 'skip']
