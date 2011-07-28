@@ -11,7 +11,6 @@ module.exports = (app) ->
     console.log "Error: #{ err }"
 
   app.post '/guess/', (req, res) ->
-    console.log req.session
     guess = req.body
 
     # make sure this is valid

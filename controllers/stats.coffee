@@ -3,6 +3,10 @@ config = require('../config')
 _      = require('underscore')
 
 kanaSet = ['katakana', 'hiragana', 'kana']
+
+intify = (obj, fields...) ->
+  for field in fields
+    obj[field] = parseInt(obj[field], 10) || 0
     
 module.exports = (app) ->
   client = redis.createClient(config.REDIS_PORT)
@@ -15,33 +19,25 @@ module.exports = (app) ->
       return next(Error("Invalid kana set #{ set }"))
     next()
 
+  app.get '/stats/', (req, res) ->
+    res.redirect "/stats/#{ req.user.id }"
+
   app.get '/stats/:uid', (req, res) ->
     uid = req.user.id
     client.smembers 'charset:kana', (err, kanaSet) ->
       pipe = client.multi()
-      kanaSet.forEach (kana) ->
+      for kana in kanaSet
         pipe.hgetall "userstats:#{ uid }:kana:#{ kana }"
 
       pipe.exec (err, stats) ->
-        _.forEach stats, (stat) ->
-          stat.correct = parseInt(stat.correct, 10) || 0
-          stat.wrong = parseInt(stat.wrong, 10) || 0
-          stat.skip = parseInt(stat.skip, 10) || 0
-
-        kanaStats = _.filter _.zip(kanaSet, stats), (kanaStat) ->
-          [kana, stat] = kanaStat
-          total = stat.correct + stat.wrong + stat.skip
-          return stat.correct + stat.wrong + stat.skip > 0
-        console.log kanaStats
-        stats = _.map kanaStats, (kanaStat) ->
-          [kana, stat] = kanaStat
+        for [kana, stat] in _.zip(kanaSet, stats)
           stat.kana = kana
-          total = stat.correct + stat.wrong + stat.skip
-          stat.percentCorrect = stat.correct / total * 100
-          return stat
+          intify(stat, 'correct', 'wrong', 'skip')
+          stat.total = stat.correct + stat.wrong + stat.skip
+          stat.percentCorrect = stat.correct / stat.total * 100
 
         res.render 'stats',
-          stats : stats
+          stats : _.filter(stats, (stat) -> stat.total > 0)
   
   app.get '/stats/:kanaSet', (req, res) ->
     client.hgetall "stats:rand:#{ req.params.kanaSet }", (err, randStats) ->

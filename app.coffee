@@ -19,8 +19,9 @@ app.configure () ->
   app.use express.methodOverride()
   app.use express.cookieParser()
   app.use express.session
-    store  : new RedisStore { db : config.SESSION_DB }
-    secret : config.SESSION_SECRET
+    store   : new RedisStore { db : config.SESSION_DB }
+    secret  : config.SESSION_SECRET
+    cookie  : { maxAge  : 10*24*3600*1000 }
 
   app.use require('stylus').middleware
     src      : __dirname + '/public'
