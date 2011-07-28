@@ -1,5 +1,6 @@
 h1 Kana Flash
 nav
   a(href="/") Home
-  a(href="/stats/"+req.user.id) Stats
+  - if (NODE_ENV != 'production')
+    a(href="/stats/"+req.user.id) Stats
   a(href="/contact/") Contact
