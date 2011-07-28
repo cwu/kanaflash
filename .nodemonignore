@@ -4,6 +4,7 @@
 ./node_module/*
 ./*.swp
 ./test/*
+./.git/*
 Cakefile
 \w*\.rdb$
 fabfile.py
