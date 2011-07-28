@@ -5,6 +5,7 @@ pids
 *.log
 .monitor
 public/stylesheets/*.css
+!public/stylesheets/lib/*.css
 public/javascripts/*.js
 !public/javascripts/lib/*.js
 .fuse_*
