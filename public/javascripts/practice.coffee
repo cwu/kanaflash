@@ -3,9 +3,9 @@ String.prototype.startsWith = (s) -> this.lastIndexOf(s, 0) == 0
 window.FlashCard = Backbone.Model.extend
   defaults  :
     kana    : ''
-    romaji : []
-    charset : 'kana'
-    guessed : false
+    romaji     : []
+    charset    : 'kana'
+    guessState : ''
   initialize : () ->
     _.bindAll this, 'random'
   isWrong    : (guess) ->
@@ -18,7 +18,7 @@ window.FlashCard = Backbone.Model.extend
       url : "#{ this.get('charset') }/random/"
       data : { prevKana : this.get('kana') }
       success : (flashCard) ->
-        flashCard.guessed = false
+        flashCard.guessState = ''
         self.set flashCard
         callback() if callback?
 
@@ -94,8 +94,8 @@ $(document).ready () ->
         this.$('.textframe').addClass('correct')
         this.$('.textframe').removeClass('wrong')
         this.$('input[type=text]').val('')
-        signalGuess(this.model, guess, 'correct')
-        this.model.set({ guessed : true })
+        signalGuess this.model, guess, 'correct'
+        this.model.set { guessState : 'correct' }
         self = this
         this.model.random () ->
           clearTimeout self.timerID
@@ -103,11 +103,12 @@ $(document).ready () ->
             self.$('.textframe').removeClass('correct')
           , 888
       else if this.model.isWrong(guess)
-        if not this.model.get('guessed')
-          signalGuess(this.model, guess, 'wrong')
-          this.model.set({ guessed : true })
+        if this.model.get('guessState') == ''
+          signalGuess this.model, guess, 'wrong'
+          this.model.set { guessState : 'wrong' }
         this.$('.textframe').addClass('wrong')
       else
+        this.model.set { guessState : '' }
         this.$('.textframe').removeClass('wrong')
     render : () ->
       this.$('p.kana').text this.model.get('kana')
@@ -144,7 +145,7 @@ $('#flashcard input[type=text]').live 'focus', () ->
 $('#flashcard input[type=text]').live 'blur', () ->
   if $.trim($(this).val()) == ''
     $(this).addClass('prompt')
-    $(this).val('Enter Romanji...')
+    $(this).val('Enter Romaji...')
 
 skipBtnTimerRunning = false
 $('#flashcard .skip-button').live 'click', () ->
