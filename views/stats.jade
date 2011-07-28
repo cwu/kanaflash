@@ -13,6 +13,6 @@ table
         td #{ stat.correct }
         td #{ stat.wrong }
         td #{ stat.skip }
-        td #{ stat.percentCorrect }
+        td #{ stat.percentCorrect.toFixed(0) }
 - if (stats.length == 0)
   p No stats
