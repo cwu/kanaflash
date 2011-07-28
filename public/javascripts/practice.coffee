@@ -149,6 +149,7 @@ $('#flashcard input[type=text]').live 'blur', () ->
 skipBtnTimerRunning = false
 $('#flashcard .skip-button').live 'click', () ->
   if not skipBtnTimerRunning
+    signalGuess flashCard, undefined, 'skip'
     skipBtnTimerRunning = true
     $('#flashcard p.response').text(window.flashCard.get('romanji').join(', '))
     clearTimeout skipBtnTimerID
