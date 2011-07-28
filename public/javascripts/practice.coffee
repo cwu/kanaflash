@@ -3,15 +3,15 @@ String.prototype.startsWith = (s) -> this.lastIndexOf(s, 0) == 0
 window.FlashCard = Backbone.Model.extend
   defaults  :
     kana    : ''
-    romanji : []
+    romaji : []
     charset : 'kana'
     guessed : false
   initialize : () ->
     _.bindAll this, 'random'
   isWrong    : (guess) ->
-    minLength = (_.max this.get('romanji'), (s) -> s.length || 0).length
-    guess.length >= minLength and not _.any this.get('romanji'), (s) -> s.startsWith(guess)
-  isCorrect  : (guess) ->  _.contains(this.get('romanji'), guess)
+    minLength = (_.max this.get('romaji'), (s) -> s.length || 0).length
+    guess.length >= minLength and not _.any this.get('romaji'), (s) -> s.startsWith(guess)
+  isCorrect  : (guess) ->  _.contains(this.get('romaji'), guess)
   random     : (callback) ->
     self = this
     $.ajax
@@ -151,7 +151,7 @@ $('#flashcard .skip-button').live 'click', () ->
   if not skipBtnTimerRunning
     signalGuess flashCard, undefined, 'skip'
     skipBtnTimerRunning = true
-    $('#flashcard p.response').text(window.flashCard.get('romanji').join(', '))
+    $('#flashcard p.response').text(window.flashCard.get('romaji').join(', '))
     clearTimeout skipBtnTimerID
     skipBtnTimerID = setTimeout ()->
       #TODO make it fade instead
