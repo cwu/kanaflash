@@ -10,7 +10,6 @@ html
 
     link(rel='stylesheet', href='/stylesheets/reset.css')
     link(rel='stylesheet', href='/stylesheets/all.css')
-    link(rel='stylesheet', href='/stylesheets/kana.css')
 
     - each css in cssIncludes.get()
       link(rel='stylesheet', href='/stylesheets/' + css + '.css')
@@ -55,3 +54,7 @@ html
       a(href='/about/') About
       | 
       a(href='/') Terms and Conditions
+
+      - if (NODE_ENV != 'production')
+        p(style="font-family: consolas, helvetica; font-size: 14px; text-align: left; width: 800px; margin: auto;")
+          != JSON.stringify(req.session, null, 4).replace(/\n/g, "<br/>").replace(/ /g, "&nbsp;")
