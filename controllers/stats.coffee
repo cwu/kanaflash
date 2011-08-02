@@ -9,9 +9,14 @@ intify = (obj, fields...) ->
     obj[field] = parseInt(obj[field], 10) || 0
     
 module.exports = (app) ->
-  client = redis.createClient(config.REDIS_PORT)
-  client.select config.STAT_DB
-  client.on 'error', (err) ->
+  statClient = redis.createClient(config.REDIS_PORT)
+  statClient.select config.STAT_DB
+  statClient.on 'error', (err) ->
+    console.log "Error: " + err
+
+  dataClient = redis.createClient(config.REDIS_PORT)
+  dataClient.select config.DATA_DB
+  dataClient.on 'error', (err) ->
     console.log "Error: " + err
 
   app.param 'kanaSet', (req, res, next, set) ->
@@ -24,8 +29,8 @@ module.exports = (app) ->
 
   app.get '/stats/:uid', (req, res) ->
     uid = req.user.id
-    client.smembers 'charset:kana', (err, kanaSet) ->
-      pipe = client.multi()
+    dataClient.smembers 'charset:kana', (err, kanaSet) ->
+      pipe = statClient.multi()
       for kana in kanaSet
         pipe.hgetall "userstats:#{ uid }:kana:#{ kana }"
 
@@ -40,7 +45,7 @@ module.exports = (app) ->
           stats : _.filter(stats, (stat) -> stat.total > 0)
   
   app.get '/stats/:kanaSet', (req, res) ->
-    client.hgetall "stats:rand:#{ req.params.kanaSet }", (err, randStats) ->
+    statClient.hgetall "stats:rand:#{ req.params.kanaSet }", (err, randStats) ->
       throw err if err
 
       charCount = 0
