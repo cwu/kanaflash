@@ -1,8 +1,8 @@
 !!! 5
 html
   head
-    - if (typeof(title) != 'undefined')
-      title #{ title } - Kana Flash
+    - if (typeof(title.get()) != "undefined")
+      title #{ title.get() } - Kana Flash
     - else
       title Kana Flash
 
@@ -62,5 +62,7 @@ html
 
       - if (NODE_ENV != 'production')
         pre.prettyprint.debug-dump
-          span session = 
+          p req.url = "#{ req.url }"
+          p req.sessionID = "#{ req.sessionID }"
+          p req.session = 
           #{ JSON.stringify(req.session, null, 4) }

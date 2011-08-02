@@ -2,7 +2,7 @@ express    = require('express')
 RedisStore = require('connect-redis')(express)
 property   = require('./lib/property')
 config     = require('./config')
-middleware = require('./lib/middleware')
+middleware = require('./lib/middleware')()
 
 app = module.exports = express.createServer()
 app.NODE_ENV = global.process.env.NODE_ENV || 'development'
@@ -28,13 +28,14 @@ app.configure () ->
     compress : app.NODE_ENV == 'production'
   app.use express.static(__dirname + '/public')
 
-  app.use middleware().loadUser
+  app.use middleware.loadUser
 
   app.helpers
     NODE_ENV : app.NODE_ENV
 
   app.dynamicHelpers
     req         : (req) -> req
+    title       : ()    -> property.create()
     cssIncludes : ()    -> property.create([])
     jsIncludes  : ()    -> property.create([])
 
