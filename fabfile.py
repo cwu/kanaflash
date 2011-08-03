@@ -15,6 +15,11 @@ def minify():
 def find_new_secret():
     run('sh /opt/tools/kanasecret')
 
+def reset_db():
+    with cd(code_dir):
+        run("redis-cli flushall")
+        run("make seed")
+
 def deploy():
     with cd(code_dir):
         run('git co .')

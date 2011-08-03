@@ -1,14 +1,15 @@
 redis  = require('redis')
 config = require('../config')
 _      = require('underscore')
+hacks  = require('../lib/hacks')
 
 allowedGuessResults = ['correct', 'wrong', 'skip']
 
 module.exports = (app) ->
   client = redis.createClient(config.REDIS_PORT)
   client.select config.STAT_DB
-  client.on 'error', (err) ->
-    console.log "Error: #{ err }"
+  client.on 'connect', hacks.onConnect(client, config.STAT_DB)
+  client.on 'error', hacks.onError
 
   app.post '/guess/', (req, res) ->
     guess = req.body

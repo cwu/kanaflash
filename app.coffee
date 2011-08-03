@@ -3,6 +3,7 @@ RedisStore = require('connect-redis')(express)
 property   = require('./lib/property')
 config     = require('./config')
 middleware = require('./lib/middleware')()
+hacks      = require('./lib/hacks')
 
 app = module.exports = express.createServer()
 app.NODE_ENV = global.process.env.NODE_ENV || 'development'
@@ -18,8 +19,12 @@ app.configure () ->
   app.use express.bodyParser()
   app.use express.methodOverride()
   app.use express.cookieParser()
+
+  store = new RedisStore { db : config.SESSION_DB }
+  store.client.on 'connect', hacks.onConnect(store.client, config.SESSION_DB)
+  store.client.on 'error', hacks.onError
   app.use express.session
-    store   : new RedisStore { db : config.SESSION_DB }
+    store   : store
     secret  : config.SESSION_SECRET
     cookie  : { maxAge  : 10*24*3600*1000 }
 

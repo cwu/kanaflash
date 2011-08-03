@@ -1,6 +1,7 @@
 redis  = require('redis')
 config = require('../config')
 _      = require('underscore')
+hacks  = require('../lib/hacks')
 
 kanaSet = ['katakana', 'hiragana', 'kana']
 
@@ -11,13 +12,13 @@ intify = (obj, fields...) ->
 module.exports = (app) ->
   statClient = redis.createClient(config.REDIS_PORT)
   statClient.select config.STAT_DB
-  statClient.on 'error', (err) ->
-    console.log "Error: " + err
+  statClient.on 'connect', hacks.onConnect(statClient, config.STAT_DB)
+  statClient.on 'error', hacks.onError
 
   dataClient = redis.createClient(config.REDIS_PORT)
   dataClient.select config.DATA_DB
-  dataClient.on 'error', (err) ->
-    console.log "Error: " + err
+  dataClient.on 'connect', hacks.onConnect(dataClient, config.DATA_DB)
+  dataClient.on 'error', hacks.onError
 
   app.param 'kanaSet', (req, res, next, set) ->
     if not _.contains(kanaSet, set)
