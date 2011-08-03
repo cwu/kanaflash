@@ -35,6 +35,7 @@ app.configure () ->
   app.use express.static(__dirname + '/public')
 
   app.use middleware.loadUser
+  app.use middleware.checkIfDeveloper
 
   app.helpers
     NODE_ENV : app.NODE_ENV

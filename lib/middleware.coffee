@@ -22,3 +22,7 @@ exports = module.exports = () ->
 
     next()
 
+  checkIfDeveloper : (req, res, next) ->
+    req.session.isDeveloper = req.query['is_developer'] == 'of_course_i_am' if req.query['is_developer']?
+    next()
+

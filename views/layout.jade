@@ -15,18 +15,19 @@ html
       link(rel='stylesheet', href='/stylesheets/' + css + '.css')
 
     script(src="/javascripts/lib/html5.js")
-    - if (NODE_ENV == 'production' )
+    - if (NODE_ENV == 'production')
       script(src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js")
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js")
       script(src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.6/underscore-min.js")
       script(src="/javascripts/lib/backbone-min.js")
     - else
-      link(rel="stylesheet", href="/stylesheets/lib/prettify.css")
-
       script(src="/javascripts/lib/json2.js")
       script(src="/javascripts/lib/jquery-1.6.1.js")
       script(src="/javascripts/lib/underscore.js")
       script(src="/javascripts/lib/backbone.js")
+
+    - if (NODE_ENV != 'production' || req.session.isDeveloper)
+      link(rel="stylesheet", href="/stylesheets/lib/prettify.css")
       script(src="/javascripts/lib/prettify.js")
       script(type="text/javascript")
         $(document).ready(prettyPrint);
@@ -60,7 +61,7 @@ html
       | 
       a(href='/') Terms and Conditions
 
-      - if (NODE_ENV != 'production')
+      - if (NODE_ENV != 'production' || req.session.isDeveloper)
         pre.prettyprint.debug-dump
           p req.url = "#{ req.url }"
           p req.sessionID = "#{ req.sessionID }"

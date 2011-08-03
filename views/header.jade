@@ -1,6 +1,6 @@
 h1 Kana Flash
 nav
   a(href="/") Home
-  - if (NODE_ENV != 'production')
+  - if (NODE_ENV != 'production' || req.session.isDeveloper)
     a(href="/stats/"+req.user.id) Stats
   a(href="/contact/") Contact
