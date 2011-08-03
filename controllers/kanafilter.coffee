@@ -1,5 +1,3 @@
-_      = require('underscore')
-
 defaults =
   hiragana : true
   katakana : true

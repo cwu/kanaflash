@@ -1,3 +1,4 @@
+_          = require('underscore')
 express    = require('express')
 RedisStore = require('connect-redis')(express)
 property   = require('./lib/property')
@@ -51,6 +52,13 @@ app.configure 'development', () ->
 
 app.configure 'production', () ->
   app.use express.errorHandler()
+
+# Setup the app params
+kanaSet = ['katakana', 'hiragana', 'kana']
+app.param 'kanaSet', (req, res, next, set) ->
+  if not _.contains(kanaSet, set)
+    return next(Error("Invalid kana set #{ set }"))
+  next()
 
 # Controllers
 require(__dirname + '/controllers/pages')(app)

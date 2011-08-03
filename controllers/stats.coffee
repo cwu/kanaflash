@@ -1,9 +1,7 @@
 redis  = require('redis')
-config = require('../config')
 _      = require('underscore')
+config = require('../config')
 hacks  = require('../lib/hacks')
-
-kanaSet = ['katakana', 'hiragana', 'kana']
 
 intify = (obj, fields...) ->
   for field in fields
@@ -20,13 +18,8 @@ module.exports = (app) ->
   dataClient.on 'connect', hacks.onConnect(dataClient, config.DATA_DB)
   dataClient.on 'error', hacks.onError
 
-  app.param 'kanaSet', (req, res, next, set) ->
-    if not _.contains(kanaSet, set)
-      return next(Error("Invalid kana set #{ set }"))
-    next()
-
-  app.get '/stats/', (req, res) ->
-    res.redirect "/stats/#{ req.user.id }"
+  app.get '/stats',  (req, res) -> res.redirect "/stats/#{ req.user.id }"
+  app.get '/stats/', (req, res) -> res.redirect "/stats/#{ req.user.id }"
 
   app.get '/stats/:uid', (req, res) ->
     uid = req.user.id
@@ -67,5 +60,4 @@ module.exports = (app) ->
         count : charCount
         total : total
         stats : stats
-
 
