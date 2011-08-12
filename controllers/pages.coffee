@@ -7,4 +7,5 @@ module.exports = (app) ->
       katakana : _.indexOf(req.session.kanaFilter, 'katakana') > -1
 
   app.get '/contact/', (req, res) -> res.render 'contact'
-  app.get '/about/', (req, res)   -> res.render 'about'
+  app.get '/about/',   (req, res) -> res.render 'about'
+  app.get '/terms/',   (req, res) -> res.render 'terms'
