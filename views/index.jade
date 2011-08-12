@@ -1,6 +1,13 @@
 - title.set("Home")
 - jsIncludes.add("practice")
 
+div(style="position:absolute; right: 0; width: 90px;")
+  g:plusone(href="http://kanaflash.com")
+  br
+  #fb-root
+  fb:like(href="http://kanaflash.com", send="false", layout="button_count",
+          width="90", show_faces="true", action="like", font="")
+
 #kana-filter.center
   span.select-button.unselected(data-charset="hiragana") Hiragana
   span.select-button.unselected(data-charset="katakana") Katakana
@@ -10,7 +17,15 @@
   .textframe
     input(type="text", autocomplete="off")
   p.response
-  .skip-button &gt;
+  span.skip-button &gt;
+
+script(type="text/javascript")
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+script(src="http://connect.facebook.net/en_US/all.js#appId=177936752276227&amp;xfbml=1")
 
 script(type="text/template", id="kanafilter-template")
   <% if (hiragana) %>
