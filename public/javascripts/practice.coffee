@@ -99,6 +99,7 @@ $(document).ready () ->
         self = this
         this.model.random () ->
           clearTimeout self.timerID
+          self.$('input[type=text]').focus()
           self.timerID = setTimeout ()->
             self.$('.textframe').removeClass('correct')
           , 888
@@ -128,9 +129,8 @@ $(document).ready () ->
 
   kanaFilter.bind 'change', (model) ->
     flashCard.set { charset : model.kanaUrl() }
-    flashCard.random()
-
-  flashCardView.$('input[type=text]').focus()
+    flashCard.random () ->
+      flashCardView.$('input[type=text]').focus()
 
   kanaFilter.fetch
     success : () ->
@@ -158,7 +158,8 @@ $('#flashcard .skip-button').live 'click', () ->
       #TODO make it fade instead
       $('#flashcard p.response').text('')
       $('#flashcard input[type=text]').val('')
-      window.flashCard.random()
+      window.flashCard.random () ->
+        flashCardView.$("input[type=text]").focus()
       skipBtnTimerRunning = false
     , 1000
 
