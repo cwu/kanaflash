@@ -10,8 +10,8 @@ window.FlashCard = Backbone.Model.extend
     _.bindAll this, 'random'
   isWrong    : (guess) ->
     minLength = (_.max this.get('romaji'), (s) -> s.length || 0).length
-    guess.length >= minLength and not _.any this.get('romaji'), (s) -> s.startsWith(guess)
-  isCorrect  : (guess) ->  _.contains(this.get('romaji'), guess)
+    guess.length >= minLength and not _.any this.get('romaji'), (s) -> s.startsWith(guess.toLowerCase())
+  isCorrect  : (guess) ->  _.contains(this.get('romaji'), guess.toLowerCase())
   random     : (callback) ->
     self = this
     $.ajax
@@ -58,7 +58,7 @@ signalGuess = (flashCard, guess, guessResult) ->
     url  : "/guess/"
     type : "POST"
     data :
-      guess       : guess
+      guess       : guess.toLowerCase()
       guessResult : guessResult
       kana        : flashCard.get('kana')
       charset     : flashCard.get('charset')
