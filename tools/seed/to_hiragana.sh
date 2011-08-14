@@ -79,8 +79,6 @@ redis-cli -p $PORT hmset "map2:hiragana" "ze" "ぜ"
 redis-cli -p $PORT hmset "map2:hiragana" "zo" "ぞ"
 
 redis-cli -p $PORT hmset "map2:hiragana" "da" "だ"
-redis-cli -p $PORT hmset "map2:hiragana" "di" "じ"
-redis-cli -p $PORT hmset "map2:hiragana" "du" "ず"
 redis-cli -p $PORT hmset "map2:hiragana" "de" "で"
 redis-cli -p $PORT hmset "map2:hiragana" "do" "ど"
 

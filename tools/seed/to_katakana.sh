@@ -79,8 +79,6 @@ redis-cli -p $PORT hmset "map2:katakana" "ze" "ゼ"
 redis-cli -p $PORT hmset "map2:katakana" "zo" "ゾ"
 
 redis-cli -p $PORT hmset "map2:katakana" "da" "ダ"
-redis-cli -p $PORT hmset "map2:katakana" "di" "ジ"
-redis-cli -p $PORT hmset "map2:katakana" "du" "ズ"
 redis-cli -p $PORT hmset "map2:katakana" "de" "デ"
 redis-cli -p $PORT hmset "map2:katakana" "do" "ド"
 
