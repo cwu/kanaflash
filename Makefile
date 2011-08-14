@@ -40,11 +40,15 @@ deps:
 
 seed:
 	@echo "Seeding hiragana..."
-	sh tools/seed/hiragana.sh
+	@sh tools/seed/hiragana.sh
 	@echo "Seeding katakana..."
-	sh tools/seed/katakana.sh
+	@sh tools/seed/katakana.sh
 	@echo "Combining for kana..."
-	sh tools/seed/kana.sh
+	@sh tools/seed/kana.sh
+	@echo "Seeding map2:hiragana..."
+	@sh tools/seed/to_hiragana.sh
+	@echo "Seeding map2:katakana..."
+	@sh tools/seed/to_katakana.sh
 
 clean:
 	@echo "Removing public js"

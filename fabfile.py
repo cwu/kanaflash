@@ -24,6 +24,10 @@ def reset_db():
             run("redis-cli flushall")
             run("make seed")
 
+def seed():
+    with cd(code_dir):
+        run("make seed")
+
 def deploy():
     with cd(code_dir):
         run('git co .')
