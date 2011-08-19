@@ -18,6 +18,11 @@ module.exports = (app) ->
   dataClient.on 'connect', hacks.onConnect(dataClient, config.DATA_DB)
   dataClient.on 'error', hacks.onError
 
+  map2hiragana = {}
+  map2katakana = {}
+  dataClient.hgetall "map2:hiragana", (err, map) -> map2hiragana = map if not err?
+  dataClient.hgetall "map2:katakana", (err, map) -> map2katakana = map if not err?
+
   app.get '/stats',  (req, res) -> res.redirect "/stats/#{ req.user.id }"
   app.get '/stats/', (req, res) -> res.redirect "/stats/#{ req.user.id }"
 
@@ -29,14 +34,19 @@ module.exports = (app) ->
         pipe.hgetall "userstats:#{ uid }:kana:#{ kana }"
 
       pipe.exec (err, stats) ->
+        kana2stat = {}
         for [kana, stat] in _.zip(kanaSet, stats)
           stat.kana = kana
           intify(stat, 'correct', 'wrong', 'skip')
           stat.total = stat.correct + stat.wrong + stat.skip
-          stat.percentCorrect = stat.correct / stat.total * 100
+          stat.percentCorrect = stat.correct / stat.total * 100 if stat.total > 0
+          kana2stat[kana] = stat
 
         res.render 'stats',
           stats : _.filter(stats, (stat) -> stat.total > 0)
+          kana2stat : kana2stat
+          map2hiragana : map2hiragana
+          map2katakana : map2katakana
   
   app.get '/stats/:kanaSet', (req, res) ->
     statClient.hgetall "stats:rand:#{ req.params.kanaSet }", (err, randStats) ->
@@ -51,13 +61,13 @@ module.exports = (app) ->
 
       stats = for own kana, count of randStats
         count = parseInt(count, 10)
-        kana   : kana
-        count  : count
+        kana    : kana
+        count   : count
         percent : 100.0 * count / total
 
       res.render 'kanaStats',
-        set   : req.params.kanaSet
-        count : charCount
-        total : total
-        stats : stats
+        set          : req.params.kanaSet
+        count        : charCount
+        total        : total
+        stats        : stats
 

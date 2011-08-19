@@ -1,9 +1,15 @@
+border-radius()
+ -webkit-border-radius arguments
+ -moz-border-radius arguments
+ border-radius arguments
+
 table
   width 100%
   text-align center
   margin 20px 0
 
-h1
+#content h1
+  display inline
   font-size 150%
 
 table.summary
@@ -12,3 +18,32 @@ table.summary
     text-align left
   td
     text-align left
+
+table.kana-chart
+  border-collapse separate
+  border-spacing 10px
+  td
+    border-radius 4px
+    width 80px
+  tbody
+    margin-bottom 10px
+
+nav#tabs
+  float right
+  a
+    display inline-block
+    padding 3px 5px
+    margin-left 20px
+    border-radius 5px
+    text-decoration none
+    width 100px
+    text-align center
+    color #EEEEEE
+    background-color #888888
+    font-weight bold
+  a:hover
+    background-color #CCCCCC
+  a.selected
+    background-color #18DB1B
+
+

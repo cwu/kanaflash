@@ -1,20 +1,22 @@
 - title.set("Stats")
+- cssIncludes.add('stats')
+- jsIncludes.add('stats')
 
-h1 Stats
-table
-  thead
-    th Kana
-    th Correct
-    th Wrong
-    th Skip
-    th Correct %
-  tbody
-    - each stat in stats
-      tr
-        td #{ stat.kana }
-        td #{ stat.correct }
-        td #{ stat.wrong }
-        td #{ stat.skip }
-        td #{ stat.percentCorrect.toFixed(0) }
-- if (stats.length == 0)
-  p No stats
+h1 My Stats
+nav#tabs
+  //a(href="#summary").selected Summary
+  a(href="#hiragana").selected Hiragana
+  a(href="#katakana") Katakana
+
+//div#summary-tab
+//  | Summary bitches
+
+- map2kana = map2hiragana
+div(style="display:none")#hiragana-tab
+  table.kana-chart#hiragana-chart
+    != partial('kanaChart')
+
+- map2kana = map2katakana
+div(style="display:none")#katakana-tab
+  table.kana-chart#katakana-chart
+    != partial('kanaChart')

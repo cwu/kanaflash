@@ -1,0 +1,45 @@
+thead
+  //tr
+  //  th(colspan="8").left-align Hover over kana for more details
+  tr
+    td(data-percent-correct="0") 0 %
+    td(data-percent-correct="25") 25 %
+    td(data-percent-correct="50") 50 %
+    td(data-percent-correct="75") 75 %
+    td(data-percent-correct="100") 100 %
+
+tbody
+  - each prefix in '_kstnhmyrw'
+    tr
+      - each suffix in ['a', 'i', 'u', 'e', 'o', 'ya', 'yu', 'yo']
+        - kana = map2kana[prefix + suffix]
+        - stat = kana2stat[kana] || {}
+        - if (stat.percentCorrect != null)
+          td(data-kana="#{ kana }", data-percent-correct="#{ stat.percentCorrect }")
+            #{ kana }
+        - else
+          td(data-kana="#{ kana }")
+            #{ kana }
+  tr
+    td(colspan="2")
+    - kana = map2kana['n']
+    - stat = kana2stat[kana] || {}
+    - if (stat.percentCorrect != null)
+      td(data-kana="#{ kana }", data-percent-correct="#{ stat.percentCorrect }")
+        #{ kana }
+    - else
+      td(data-kana="#{ kana }")
+        #{ kana }
+  tr
+    td(colspan="8")
+  - each prefix in 'gzdbp'
+    tr
+      - each suffix in ['a', 'i', 'u', 'e', 'o', 'ya', 'yu', 'yo']
+        - kana = map2kana[prefix + suffix]
+        - stat = kana2stat[kana] || {}
+        - if (stat.percentCorrect != null)
+          td(data-kana="#{ kana }", data-percent-correct="#{ stat.percentCorrect }")
+            #{ kana }
+        - else
+          td(data-kana="#{ kana }")
+            #{ kana }

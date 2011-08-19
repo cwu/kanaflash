@@ -58,7 +58,7 @@ signalGuess = (flashCard, guess, guessResult) ->
     url  : "/guess/"
     type : "POST"
     data :
-      guess       : guess.toLowerCase()
+      guess       : guess?.toLowerCase()
       guessResult : guessResult
       kana        : flashCard.get('kana')
       charset     : flashCard.get('charset')
