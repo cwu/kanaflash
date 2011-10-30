@@ -1,35 +1,24 @@
-redis  = require('redis')
 _      = require('underscore')
-config = require('../config')
-hacks  = require('../lib/hacks')
 
 intify = (obj, fields...) ->
   for field in fields
     obj[field] = parseInt(obj[field], 10) || 0
     
 module.exports = (app) ->
-  statClient = redis.createClient(config.REDIS_PORT)
-  statClient.select config.STAT_DB
-  statClient.on 'connect', hacks.onConnect(statClient, config.STAT_DB)
-  statClient.on 'error', hacks.onError
-
-  dataClient = redis.createClient(config.REDIS_PORT)
-  dataClient.select config.DATA_DB
-  dataClient.on 'connect', hacks.onConnect(dataClient, config.DATA_DB)
-  dataClient.on 'error', hacks.onError
-
   map2hiragana = {}
   map2katakana = {}
-  dataClient.hgetall "map2:hiragana", (err, map) -> map2hiragana = map if not err?
-  dataClient.hgetall "map2:katakana", (err, map) -> map2katakana = map if not err?
+
+  # race condition on startup :(
+  app.redis.hgetall "map2:hiragana", (err, map) -> map2hiragana = map if not err?
+  app.redis.hgetall "map2:katakana", (err, map) -> map2katakana = map if not err?
 
   app.get '/stats',  (req, res) -> res.redirect "/stats/#{ req.user.id }"
   app.get '/stats/', (req, res) -> res.redirect "/stats/#{ req.user.id }"
 
   app.get '/stats/:uid', (req, res) ->
     uid = req.user.id
-    dataClient.smembers 'charset:kana', (err, kanaSet) ->
-      pipe = statClient.multi()
+    app.redis.smembers 'charset:kana', (err, kanaSet) ->
+      pipe = app.statRedis.multi()
       for kana in kanaSet
         pipe.hgetall "userstats:#{ uid }:kana:#{ kana }"
 
@@ -49,7 +38,7 @@ module.exports = (app) ->
           map2katakana : map2katakana
   
   app.get '/stats/:kanaSet', (req, res) ->
-    statClient.hgetall "stats:rand:#{ req.params.kanaSet }", (err, randStats) ->
+    app.statRedis.hgetall "stats:rand:#{ req.params.kanaSet }", (err, randStats) ->
       throw err if err
 
       charCount = 0

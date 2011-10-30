@@ -1,4 +1,5 @@
 _          = require('underscore')
+redis      = require('redis')
 express    = require('express')
 RedisStore = require('connect-redis')(express)
 property   = require('./lib/property')
@@ -44,6 +45,17 @@ app.configure () ->
     jsIncludes  : ()    -> property.create([])
 
   app.use app.router
+
+  app.redis = redis.createClient(config.REDIS_PORT)
+  app.redis.select config.DATA_DB
+  app.redis.on 'connect', hacks.onConnect(app.redis, config.DATA_DB)
+  app.redis.on 'error', hacks.onError
+
+  app.statRedis = redis.createClient(config.REDIS_PORT)
+  app.statRedis.select config.STAT_DB
+  app.statRedis.on 'connect', hacks.onConnect(app.statRedis, config.STAT_DB)
+  app.statRedis.on 'error', hacks.onError
+
 
 app.configure 'development', () ->
   app.use express.errorHandler { dumpExceptions: true, showStack: true }

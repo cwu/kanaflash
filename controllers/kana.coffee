@@ -1,15 +1,6 @@
-redis  = require('redis')
-config = require('../config')
-hacks  = require('../lib/hacks')
-
 module.exports = (app) ->
-  client = redis.createClient(config.REDIS_PORT)
-  client.select config.DATA_DB
-  client.on 'connect', hacks.onConnect(client, config.DATA_DB)
-  client.on 'error', hacks.onError
-
   app.get '/:kanaSet/index', (req, res) ->
-    client.smembers "charset:#{ req.params.kanaSet }", (err, data) ->
+    app.redis.smembers "charset:#{ req.params.kanaSet }", (err, data) ->
       res.contentType "json"
       res.send data
 
@@ -20,12 +11,12 @@ module.exports = (app) ->
       randAttempt++
 
       if req.query.prevKana == kana and randAttempt < config.MAX_RAND_TRIES
-        return client.srandmember "charset:#{ req.params.kanaSet }", randCallback
+        return app.redis.srandmember "charset:#{ req.params.kanaSet }", randCallback
 
-      client.hincrby "stats:rand:#{ req.params.kanaSet }", kana, 1, (err, status) ->
+      app.redis.hincrby "stats:rand:#{ req.params.kanaSet }", kana, 1, (err, status) ->
         console.warn err if err
 
-      client.smembers "romaji:#{ kana }", (err, romaji) ->
+      app.redis.smembers "romaji:#{ kana }", (err, romaji) ->
         throw err if err
 
         res.header "Cache-Control", "no-cache, must-revalidate"
@@ -34,5 +25,5 @@ module.exports = (app) ->
           kana    : kana
           romaji : romaji
 
-    client.srandmember "charset:#{ req.params.kanaSet }", randCallback
+    app.redis.srandmember "charset:#{ req.params.kanaSet }", randCallback
 
