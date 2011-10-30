@@ -86,5 +86,6 @@ app.error (err, req, res, next) ->
   else
     next err
 
-app.listen(global.process.env.PORT || config.SERVER_PORT)
-console.log "Express server listening on port %d in %s mode", app.address().port, app.NODE_ENV
+if not module.parent
+  app.listen(global.process.env.PORT || config.SERVER_PORT)
+  console.log "Express server listening on port %d in %s mode", app.address().port, app.NODE_ENV

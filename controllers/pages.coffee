@@ -6,6 +6,6 @@ module.exports = (app) ->
       hiragana : _.indexOf(req.session.kanaFilter, 'hiragana') > -1
       katakana : _.indexOf(req.session.kanaFilter, 'katakana') > -1
 
-  app.get '/contact/', (req, res) -> res.render 'contact'
-  app.get '/about/',   (req, res) -> res.render 'about'
-  app.get '/terms/',   (req, res) -> res.render 'terms'
+  app.get '/contact/?', (req, res) -> res.render 'contact'
+  app.get '/about/?',   (req, res) -> res.render 'about'
+  app.get '/terms/?',   (req, res) -> res.render 'terms'
