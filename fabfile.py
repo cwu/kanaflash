@@ -1,8 +1,9 @@
 from fabric.api import cd, run, env
 from fabric.contrib.console import confirm
 from fabric.context_managers import settings
+from fabric.context_managers import prefix
 
-env.hosts = ['paper@linode']
+env.hosts = ['ubuntu@ec2-107-22-9-197.compute-1.amazonaws.com']
 
 code_dir = '/opt/kanaflash'
 log_dir = '%s/log' % code_dir
@@ -30,12 +31,13 @@ def seed():
 
 def deploy():
     with cd(code_dir):
-        run('git co .')
+        run('git checkout .')
         with settings(warn_only=True):
             update = run('git pull')
         if update.failed:
-            run('git co .')
+            run('git checkout .')
         find_new_secret()
-        run('npm install')
+        with prefix("source $HOME/.nvm/nvm.sh"):
+            run('npm install')
         compile_js()
         minify()
