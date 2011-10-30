@@ -1,6 +1,7 @@
 redis    = require('redis')
 hacks    = require('./hacks')
 config   = require('../config')
+crypto   = require('crypto')
 AnonUser = require('../models/anonUser')()
 
 exports = module.exports = () ->
@@ -23,6 +24,9 @@ exports = module.exports = () ->
     next()
 
   checkIfDeveloper : (req, res, next) ->
-    req.session.isDeveloper = req.query['is_developer'] == 'of_course_i_am' if req.query['is_developer']?
+    if req.query['is_developer']?
+      hash = crypto.createHash('md5').update(req.query['is_developer']).digest('hex')
+      req.session.isDeveloper = hash == '5e44cd02e9ab3373f3da14bd34156c8f'
+
     next()
 
