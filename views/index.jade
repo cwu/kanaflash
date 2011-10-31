@@ -9,8 +9,6 @@ div(style="position:absolute; right: 0; width: 90px;")
           width="90", show_faces="true", action="like", font="")
 
 #kana-filter.center
-  span.select-button.unselected(data-charset="hiragana") Hiragana
-  span.select-button.unselected(data-charset="katakana") Katakana
 
 #flashcard
   p.kana ...
@@ -29,13 +27,17 @@ script(type="text/javascript")
 script(src="http://connect.facebook.net/en_US/all.js#appId=177936752276227&amp;xfbml=1")
 
 script(type="text/template", id="kanafilter-template")
-  <% if (hiragana) %>
+  <% if (hiragana && !katakana) %>
   span.select-button.selected(data-charset="hiragana") Hiragana
   <% else %>
   span.select-button.unselected(data-charset="hiragana") Hiragana
 
-  <% if (katakana) %>
+  <% if (katakana && !hiragana) %>
   span.select-button.selected(data-charset="katakana") Katakana
   <% else %>
   span.select-button.unselected(data-charset="katakana") Katakana
 
+  <% if (hiragana && katakana) %>
+  span.select-button.selected(data-charset="both") Both
+  <% else %>
+  span.select-button.unselected(data-charset="both") Both

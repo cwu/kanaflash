@@ -33,13 +33,9 @@ window.KanaFilter = Backbone.Model.extend
       return "Must select at least one character set"
   select   : (charset) ->
     switch charset
-      when 'hiragana' then return this.save { hiragana : true }
-      when 'katakana' then return this.save { katakana : true }
-      else return false
-  unselect : (charset) ->
-    switch charset
-      when 'hiragana' then return this.save { hiragana : false }
-      when 'katakana' then return this.save { katakana : false }
+      when 'hiragana' then return this.save { hiragana : true, katakana : false }
+      when 'katakana' then return this.save { hiragana : false, katakana : true }
+      when 'both' then return this.save { hiragana : true, katakana : true }
       else return false
   url      : () ->
     return '/kanafilter/'
@@ -67,7 +63,6 @@ $(document).ready () ->
   window.KanaFilterView = Backbone.View.extend
     template : _.template $('#kanafilter-template').html()
     events     :
-      "click .select-button.selected"   : "unselect"
       "click .select-button.unselected" : "select"
     initialize : () ->
       _.bindAll this, 'render'
@@ -77,9 +72,6 @@ $(document).ready () ->
       return this
     select     : (e) ->
       this.model.select $(e.target).data('charset')
-      return this
-    unselect   : (e) ->
-      this.model.unselect $(e.target).data('charset')
       return this
 
   window.FlashCardView = Backbone.View.extend
