@@ -1,4 +1,4 @@
-from fabric.api import cd, run, env
+from fabric.api import cd, run, env, sudo
 from fabric.contrib.console import confirm
 from fabric.context_managers import settings
 from fabric.context_managers import prefix
@@ -39,5 +39,6 @@ def deploy():
         find_new_secret()
         with prefix("source $HOME/.nvm/nvm.sh"):
             run('npm install')
-        compile_js()
+            compile_js()
         minify()
+        sudo('restart kanaflash')
