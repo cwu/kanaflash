@@ -1,5 +1,5 @@
 module.exports =
-  REDIS_PORT          : 6379
+  REDIS_PORT          : 6380
   DATA_DB             : "0"
   SESSION_DB          : "1"
   STAT_DB             : "2"
