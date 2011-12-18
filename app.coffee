@@ -23,9 +23,12 @@ app.configure () ->
   app.use express.cookieParser()
 
   app.use express.session
-    store   : new RedisStore { db : config.SESSION_DB }
-    secret  : config.SESSION_SECRET
-    cookie  : { maxAge  : config.SESSION_MAX_AGE }
+    store  : new RedisStore {
+      port : config.REDIS_PORT,
+      db   : config.SESSION_DB
+    }
+    secret : config.SESSION_SECRET
+    cookie : { maxAge  : config.SESSION_MAX_AGE }
 
   app.use require('stylus').middleware
     src      : __dirname + '/public'

@@ -36,7 +36,7 @@ upstart_dev:
 	@sudo start redis-kanaflash
 
 upstart_prod:
-	@sudo cp $(UPSTART_FILEs) /etc/init
+	@sudo cp $(UPSTART_FILES) /etc/init
 
 minify: $(PUBLIC_JS_MIN)
 	@for js in $(PUBLIC_JS); do \
