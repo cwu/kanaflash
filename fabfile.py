@@ -3,7 +3,7 @@ from fabric.contrib.console import confirm
 from fabric.context_managers import settings
 from fabric.context_managers import prefix
 
-env.hosts = ['ubuntu@ec2-107-22-9-197.compute-1.amazonaws.com']
+env.hosts = ['ubuntu@ec2-107-21-64-22.compute-1.amazonaws.com']
 
 code_dir = '/opt/kanaflash'
 log_dir = '%s/log' % code_dir
@@ -41,4 +41,6 @@ def deploy():
             run('npm install')
             compile_js()
         minify()
-        sudo('restart kanaflash')
+        sudo('make upstart_dev')
+        sudo('stop kanaflash || true')
+        sudo('start kanaflash')

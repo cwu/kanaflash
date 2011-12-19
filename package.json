@@ -2,7 +2,7 @@
   "name" : "kanaflash",
   "version" : "0.0.1",
   "engines" : {
-    "node" : ">=0.4.9"
+    "node" : ">=0.6.6"
   },
   "dependencies"    : {
     "connect"       : ">=1.4.2",

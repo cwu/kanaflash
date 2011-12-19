@@ -12,7 +12,7 @@ NVM_SH           = $(NVM_DIR)/nvm.sh
 INCL_NVM         = source $(NVM_SH) ; 
 
 # Note: need to change kanaflash.conf upstart if changing node versions
-NODE_VERSION     = "v0.6.6"
+NODE_VERSION     = v0.6.6
 
 $(PUBLIC_JS_DIR)/%.js: $(PUBLIC_JS_DIR)/%.coffee
 	@echo "  Compiling $< ..."
